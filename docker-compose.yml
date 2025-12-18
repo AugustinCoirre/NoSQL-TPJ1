@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: mongoflix-db
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: mongoflix
+    volumes:
+      - mongodb_data:/data/db
+      - ./data:/data/import
+    networks:
+      - mongoflix-network
+
+  mongo-init:
+    image: mongo:7.0
+    container_name: mongoflix-init
+    depends_on:
+      - mongodb
+    volumes:
+      - ./data:/data/import
+    networks:
+      - mongoflix-network
+    entrypoint: >
+      bash -c "
+      echo 'Waiting for MongoDB to be ready...'
+      sleep 10
+      echo 'Importing directors...'
+      mongorestore --host mongodb --db mongoflix --collection directors /data/import/directors.bson
+      echo 'Importing movies...'
+      mongorestore --host mongodb --db mongoflix --collection movies /data/import/movies.bson
+      echo 'Importing reviews...'
+      mongorestore --host mongodb --db mongoflix --collection reviews /data/import/reviews.bson
+      echo 'Import completed!'
+      "
+    restart: "no"
+
+  backend:
+    build: ./backend
+    container_name: mongoflix-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/mongoflix
+      - PORT=3000
+      - NODE_ENV=development
+    depends_on:
+      - mongodb
+      - mongo-init
+    networks:
+      - mongoflix-network
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  frontend:
+    build: ./frontend
+    container_name: mongoflix-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - mongoflix-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  mongoflix-network:
+    driver: bridge

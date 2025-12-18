@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mongoflix - Gestion de Films</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-film"></i>
+                <h1>Mongoflix</h1>
+            </div>
+            <nav class="nav">
+                <button class="nav-btn active" data-section="directors">
+                    <i class="fas fa-user-tie"></i> Réalisateurs
+                </button>
+                <button class="nav-btn" data-section="movies">
+                    <i class="fas fa-video"></i> Films
+                </button>
+                <button class="nav-btn" data-section="reviews">
+                    <i class="fas fa-star"></i> Critiques
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Directors Section -->
+            <section id="directors-section" class="content-section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-user-tie"></i> Réalisateurs</h2>
+                    <button class="btn btn-primary" onclick="openModal('director')">
+                        <i class="fas fa-plus"></i> Nouveau Réalisateur
+                    </button>
+                </div>
+                <div id="directors-list" class="cards-grid"></div>
+            </section>
+
+            <!-- Movies Section -->
+            <section id="movies-section" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-video"></i> Films</h2>
+                    <button class="btn btn-primary" onclick="openModal('movie')">
+                        <i class="fas fa-plus"></i> Nouveau Film
+                    </button>
+                </div>
+                <div id="movies-list" class="cards-grid"></div>
+            </section>
+
+            <!-- Reviews Section -->
+            <section id="reviews-section" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-star"></i> Critiques</h2>
+                    <button class="btn btn-primary" onclick="openModal('review')">
+                        <i class="fas fa-plus"></i> Nouvelle Critique
+                    </button>
+                </div>
+                <div id="reviews-list" class="cards-grid"></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title"></h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="modal-form"></form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
