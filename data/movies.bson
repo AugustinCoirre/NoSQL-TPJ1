@@ -1,0 +1,65 @@
+{"_id": { "$oid": "5ecb15e8f2d14352a873f5a1" },"title": "Inception","year": 2010,"genre": ["Action", "Adventure", "Sci-Fi"],"director_id": { "$oid": "5ecb15e8f2d14352a873f58b" }}
+  {
+    "_id": { "$oid": "5ecb15e8f2d14352a873f5a2" },
+    "title": "Pulp Fiction",
+    "year": 1994,
+    "genre": ["Crime", "Drama"],
+    "director_id": { "$oid": "5ecb15e8f2d14352a873f58a" }
+  }
+  {
+    "_id": { "$oid": "5ecb15e8f2d14352a873f5a3" },
+    "title": "The Dark Knight",
+    "year": 2008,
+    "genre": ["Action", "Crime", "Drama"],
+    "director_id": { "$oid": "5ecb15e8f2d14352a873f58b" }
+  }
+  {
+    "_id": { "$oid": "5ecb15e8f2d14352a873f5a4" },
+    "title": "The Shawshank Redemption",
+    "year": 1994,
+    "genre": ["Drama"],
+    "director_id": { "$oid": "5ecb15e8f2d14352a873f58c" }
+  }
+  {
+    "_id": { "$oid": "5ecb15e8f2d14352a873f5a5" },
+    "title": "Avatar",
+    "year": 2009,
+    "genre": ["Action", "Adventure", "Fantasy"],
+    "director_id": { "$oid": "5ecb15e8f2d14352a873f598" }
+  }
+  {
+    "_id": { "$oid": "5ecb15e8f2d14352a873f5a6" },
+    "title": "Fight Club",
+    "year": 1999,
+    "genre": ["Drama"],
+    "director_id": { "$oid": "5ecb15e8f2d14352a873f592" }
+  }
+  {
+    "_id": { "$oid": "5ecb15e8f2d14352a873f5a7" },
+    "title": "The Lord of the Rings: The Fellowship of the Ring",
+    "year": 2001,
+    "genre": ["Action", "Adventure", "Drama"],
+    "director_id": { "$oid": "5ecb15e8f2d14352a873f597" }
+  }
+  {
+    "_id": { "$oid": "5ecb15e8f2d14352a873f5a8" },
+    "title": "Interstellar",
+    "year": 2014,
+    "genre": ["Adventure", "Drama", "Sci-Fi"],
+    "director_id": { "$oid": "5ecb15e8f2d14352a873f58b" }
+  }
+  {
+    "_id": { "$oid": "5ecb15e8f2d14352a873f5a9" },
+    "title": "Gladiator",
+    "year": 2000,
+    "genre": ["Action", "Adventure", "Drama"],
+    "director_id": { "$oid": "5ecb15e8f2d14352a873f593" }
+  }
+  {
+    "_id": { "$oid": "5ecb15e8f2d14352a873f5aa" },
+    "title": "The Godfather",
+    "year": 1972,
+    "genre": ["Crime", "Drama"],
+    "director_id": { "$oid": "5ecb15e8f2d14352a873f595" }
+  }
+
