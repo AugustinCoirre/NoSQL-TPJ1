@@ -15,6 +15,22 @@ services:
     networks:
       - mongoflix-network
 
+  # Service de génération de données (Python)
+  seeder:
+    image: python:3.11-slim
+    container_name: mongoflix-seeder
+    volumes:
+      - .:/app
+    working_dir: /app
+    networks:
+      - mongoflix-network
+    depends_on:
+      - mongodb
+    # On installe les dépendances et on lance le script
+    command: >
+      sh -c "pip install pymongo faker && python seed.py"
+    restart: "no"
+
   mongo-init:
     image: mongo:7.0
     container_name: mongoflix-init
@@ -28,12 +44,8 @@ services:
       bash -c "
       echo 'Waiting for MongoDB to be ready...'
       sleep 10
-      echo 'Importing directors...'
-      mongorestore --host mongodb --db mongoflix --collection directors /data/import/directors.bson
-      echo 'Importing movies...'
-      mongorestore --host mongodb --db mongoflix --collection movies /data/import/movies.bson
-      echo 'Importing reviews...'
-      mongorestore --host mongodb --db mongoflix --collection reviews /data/import/reviews.bson
+      echo 'Importing initial BSON data...'
+      mongorestore --host mongodb --db mongoflix /data/import/
       echo 'Import completed!'
       "
     restart: "no"
@@ -49,8 +61,12 @@ services:
       - PORT=3000
       - NODE_ENV=development
     depends_on:
-      - mongodb
-      - mongo-init
+      mongodb:
+        condition: service_started
+      mongo-init:
+        condition: service_completed_successfully
+      seeder:
+        condition: service_completed_successfully
     networks:
       - mongoflix-network
     volumes:
@@ -62,7 +78,7 @@ services:
     container_name: mongoflix-frontend
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "8081:80"
     depends_on:
       - backend
     networks:
