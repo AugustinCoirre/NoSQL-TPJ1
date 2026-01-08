@@ -31,7 +31,7 @@ Le script seed.py s'exécute automatiquement au démarrage via Docker. Il génè
     50 000 Entrées d'historique (watch_history) : sessions de visionnage réparties sur 1 an avec différents appareils (TV, mobile, etc.).
 
 ```bash
-docker exec -it mongoflix-db mongosh -u admin -p password --eval "db.getSiblingDB('mongoflix').watch_history.countDocuments()" 
+docker exec -it mongoflix-db mongosh -u admin -p root--eval "db.getSiblingDB('mongoflix').watch_history.countDocuments()" 
 ```
 
 ## Requêtes d'Analyse 
