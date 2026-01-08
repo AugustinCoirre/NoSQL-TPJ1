@@ -72,6 +72,7 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
+    command: ["npm", "run", "dev"]
 
   frontend:
     build: ./frontend
@@ -83,6 +84,8 @@ services:
       - backend
     networks:
       - mongoflix-network
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
 
 volumes:
   mongodb_data:
