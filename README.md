@@ -1,79 +1,65 @@
-# NoSQL-TPJ1
+# 🎬 Mongoflix - Plateforme de Streaming (Analyse NoSQL)
 
-Maintenant qu'on connaît mieux MongoDB, on va pouvoir le mettre en application dans un environnement qu'on connaît bien, une app Express !
-Le but de cet exercice est de gérer une collection de films. MongoDB sera utilisé pour stocker les données.
+Ce projet met en place une infrastructure complète pour analyser l'audience d'une plateforme de streaming vidéo en utilisant **MongoDB** et **Docker**.
 
-**Objectifs**
+## Installation et Lancement
 
-- Initialiser un projet Express avec MongoDB
-- Configurer des routes et contrôleurs
-- Gérer des opérations CRUD courantes
-- Valider les données avant le stockage en BDD
+1. **Prérequis** : Avoir Docker et Docker Compose installés sur votre machine (Linux Mint).
+2. **Lancement de la stack** :
 
-## Tâches
+   Dans le terminal, à la racine du projet, exécutez :
+   ```bash
+   docker compose up --build
 
-### 1. Initialiser un projet Express + MongoDB
+   Cette commande va :
 
-- Mets en place les fichiers de base d'un projet Express (`package.json`, `index.js`, dépendances...).
-- Dans un fichier `config/db.js` (par exemple), écris le code permettant de se connecter à une instance MongoDB.
-- Crée une base de données MongoDB qui va servir pour ce projet (ex: `mongoflix`)
-- Importe les données fournies avec les commandes suivantes :
+    Lancer un conteneur MongoDB 7.0.
 
-```sh
-# Réalisateurs
-mongoimport --db mongoflix --collection directors --file data/directors.bson
+    Importer les données BSON initiales (directors, movies, reviews).
 
-# Films
-mongoimport --db mongoflix --collection movies --file data/movies.bson
+    Lancer un service Seeder (Python) qui génère automatiquement les données massives.
 
-# Critiques
-mongoimport --db mongoflix --collection reviews --file data/reviews.bson
+
+## Génération des données 
+
+Le script seed.py s'exécute automatiquement au démarrage via Docker. Il génère les volumes suivants dans la base mongoflix :
+
+    1 000 Utilisateurs (users) : emails uniques, âges entre 13 et 80 ans, pays variés.
+
+    500 Contenus (contents) : mélange de films et séries avec genres multiples.
+
+    50 000 Entrées d'historique (watch_history) : sessions de visionnage réparties sur 1 an avec différents appareils (TV, mobile, etc.).
+
+```bash
+docker exec -it mongoflix-db mongosh -u admin -p password --eval "db.getSiblingDB('mongoflix').watch_history.countDocuments()" 
 ```
 
-### 2. CRUD des réalisateurs (directors)
+## Requêtes d'Analyse 
 
-➡️ Mets en place les routes & contrôleurs permettant d'ajouter, récupérer, modifier et supprimer un réalisateur.
+Toutes les requêtes d'analyse demandées (Top 5 contenus, temps par utilisateur, moyenne d'âge, etc.) sont répertoriées dans le fichier : 👉 queries.md
 
-> ℹ️ Pense à interroger la base de données pour voir à quoi ressemblent les données des réalisateurs. Pour cela utilise `mongosh` dans le terminal, et fais une requête `find` sur la collection `directors`.
+Vous pouvez les copier et les tester directement dans MongoDB Compass ou via le shell MongoDB du conteneur.
+Structure du Projet
 
-```
-POST /directors
-GET /directors
-GET /directors/:id
-PUT /directors/:id
-DELETE /directors/:id
-```
+    backend/ : API Node.js connectée à MongoDB.
 
-### 3. CRUD des films (movies)
+    frontend/ : Interface utilisateur.
 
-➡️ Mets en place les routes & contrôleurs permettant d'ajouter, récupérer, modifier et supprimer un film.
+    data/ : Dossier contenant les fichiers BSON pour l'initialisation.
 
-> ⚠️ Un film doit être associé à un réalisateur via la propriété `director_id`
+    seed.py : Script Python de génération de données massives (50k documents).
 
-```
-POST /movies
-GET /movies
-GET /movies/:id
-PUT /movies/:id
-DELETE /movies/:id
-```
+    docker-compose.yml : Orchestration des conteneurs.
 
-### 4. CRUD des critiques (reviews)
+    queries.md : Bibliothèque des requêtes d'agrégation NoSQL.
 
-➡️ Mets en place les routes & contrôleurs permettant d'ajouter, récupérer, modifier et supprimer un film.
+## Commandes Utiles
 
-> ⚠️ Une critique doit être associée à un film via la propriété `movie_id`
+    Arrêter le projet : docker compose down
 
-```
-POST /reviews
-GET /reviews
-GET /reviews/:id
-PUT /reviews/:id
-DELETE /reviews/:id
-```
+    Voir les logs du backend : docker logs -f mongoflix-backend
 
-### (BONUS) Validation de données avant insertion
+    Accéder à l'API : http://localhost:3000
 
-➡️ Mets en place une validation de données avant l'insertion des données (contrôleurs des routes `POST` et `PUT`)
+    Accéder à la Doc API (Swagger) : http://localhost:3000/api-docs
 
-> ℹ️ Utilise la librairie `Joi` pour valider les données. Pense à lire la documentation pour orienter tes schémas de validation correctement.
